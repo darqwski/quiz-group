@@ -5,6 +5,21 @@ import Loading from "../../components/loading/Loading";
 
 const quizId = window.sessionStorage.getItem('quizId');
 
+const ReadyToPlayView = ({ quiz = {} }) => {
+	const { description } = quiz;
+
+	return(
+		<div>
+			<p>{description}</p>
+			<h3>Aby zagrać wciśnij</h3>
+			<button onClick={()=>{window.location.href='../game/';}}>Rozpocznij quiz</button>
+		</div>
+	)
+}
+const PlayedView = () => {
+	return (<div>Już grałeś w ten quiz</div>)
+}
+
 const QuizDashboard = () => {
 	const { quizInfo, loading } = useAppRequest({
 		url:'/API/quiz-info/',
@@ -13,9 +28,10 @@ const QuizDashboard = () => {
 		data: { quizId }
 	});
 
+	const { played, quiz, game } = quizInfo || {};
 
 	return loading ? <Loading/> : (
-		<div>QuizDashboard</div>
+		played ? <PlayedView quiz={quiz} game={game}/> : <ReadyToPlayView  quiz={quiz} />
 	);
 };
 

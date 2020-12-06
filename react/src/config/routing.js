@@ -2,6 +2,7 @@ import Dashboard from '../application/dashboard/Dashboard';
 import Login from '../application/login/Login';
 import GroupDashboard from '../application/group/GroupDashboard';
 import QuizDashboard from '../application/quiz/QuizDashboard';
+import GameDashboard from '../application/game/GameDashboard';
 
 export default [
 	{
@@ -23,5 +24,10 @@ export default [
 		inMenu: true,
 		path: '/quiz',
 		component: QuizDashboard
+	},
+	{
+		inMenu: true,
+		path: '/game',
+		component: GameDashboard
 	}
 ];
