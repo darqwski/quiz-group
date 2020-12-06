@@ -1,7 +1,6 @@
 <?php
 
-class RequestAPI
-{
+class RequestAPI {
     public static function getBody(){
         return file_get_contents('php://input');
     }
