@@ -16,7 +16,7 @@ function startGame(){
         $_SESSION['gameId'] = $gameId;
     }
 
-    return $_SESSION['gameId']; 
+    return $_SESSION['gameId'];
 }
 
 function getQuestion(){
