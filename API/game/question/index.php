@@ -9,20 +9,13 @@ session_start();
 
 function startGame(){
     $quizId = RequestAPI::getJSON()['quizId'];
-    $game = PDOController::getCommand(
-        "SELECT * FROM games WHERE quizId = :quizId AND userId = :userId",
-            ["quizId"=>$quizId, "userId"=>$_SESSION['userId']]
-    );
-    $gameId = null;
-    if( count($game) == 0 ){
+    if( !isset($_SESSION['gameId']) ){
         $gameId = PDOController::insertCommand("
         INSERT INTO `games` (`gameId`, `userId`, `quizId`, `result`, `start`, `stop`) 
         VALUES (NULL, :userId, :quizId, NULL, NOW(), NULL);", ["userId"=>$_SESSION['userId'], "quizId"=>$quizId]);
-    } else {
-        $gameId = $game[0]['gameId'];
+        $_SESSION['gameId'] = $gameId;
     }
-
-    return $gameId;
+    return $_SESSION['gameId'];
 }
 
 function getQuestion(){
@@ -33,14 +26,20 @@ function getQuestion(){
         LEFT JOIN user_answers ON user_answers.questonId = questions.questionId
         WHERE user_answers.questonId IS NULL AND games.gameId = $gameId;
     ");
+
     $randomIndex = array_rand($data, 1);
     $question = $data[$randomIndex];
+
+    PDOController::insertCommand("
+        INSERT INTO `user_answers` (`userAnswerId`, `userId`, `answerId`, `datetime`, `questonId`, `gameId`) 
+        VALUES (NULL, :userId, NULL,NULL, :questionId, :gameId);
+    ",['questionId'=>$question['questionId'], 'userId' => $_SESSION['userId'], 'gameId' => $gameId]);
+
     $answers = PDOController::getCommand("
         SELECT answers.text FROM answers
         WHERE answers.questionId = :questionId
     ", ['questionId'=>$question['questionId']]);
     return (new DataStream(['question'=>$question,'answers'=>$answers]))->toJson();
-
 }
 
 switch (RequestAPI::getMethod()) {
