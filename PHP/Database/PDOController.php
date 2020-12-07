@@ -28,6 +28,11 @@ class PDOController
             $paramsArray[":$key"] = $param;
         }
         $statement->execute($paramsArray);
+        if ($statement->errorInfo()[0] != '00000') {
+            print_r($command);
+            print_r($statement->errorInfo());
+            return $statement->errorInfo();
+        }
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
@@ -43,6 +48,7 @@ class PDOController
 
         $result = $statement->execute($paramsArray);
         if ($statement->errorInfo()[0] != '00000') {
+            print_r($command);
             print_r($statement->errorInfo());
             return $statement->errorInfo();
         }
@@ -59,8 +65,8 @@ class PDOController
 
         $statement->execute($paramsArray);
         if ($statement->errorInfo()[0] != '00000') {
+            print_r($command);
             print_r($statement->errorInfo());
-            testQuery($command, $params);
             return $statement->errorInfo();
         }
         $records = PDOController::$db->query("SELECT LAST_INSERT_ID()");
