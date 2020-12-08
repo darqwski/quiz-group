@@ -20,10 +20,10 @@ function isLastAnswer(){
     return count($leftQuestions) == 0;
 }
 
-function endGame(){
+function endGame($sumOfPoints){
     PDOController::putCommand("
-        UPDATE `games` SET `stop` = NOW() WHERE games.stop IS NULL AND userId = $_SESSION[userId];
-    ");
+        UPDATE `games` SET `stop` = NOW(), result = :sumOfPoints WHERE games.stop IS NULL AND userId = $_SESSION[userId];
+    ", ["sumOfPoints"=>$sumOfPoints]);
 }
 
 function calculateResult(){
@@ -56,8 +56,8 @@ function answerQuestion(){
     $response = ["correctAnswer"=>$correctAnswer];
     if(isLastAnswer()){
         $response['isLastAnswer'] = true;
-        endGame();
         $response['result']=calculateResult();
+        endGame($response['result']);
         unset($_SESSION['gameId']);
     }
 

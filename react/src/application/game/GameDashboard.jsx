@@ -30,9 +30,7 @@ const PossibleAnswer = ({ answerId, text, setResult, addAnswer, refresh, setLast
 			if(isLastAnswer){
 				setResult(result);
 				setLastAnswer(true);
-				console.log("THE END?")
 			} else {
-				console.log("REFRESH?")
 				setTimeout(refresh, 5000);
 			}
 		});
@@ -42,6 +40,16 @@ const PossibleAnswer = ({ answerId, text, setResult, addAnswer, refresh, setLast
 		<button onClick={onClick}>{text}</button>
 	);
 };
+
+const StartCountdown = () => {
+
+}
+const QuestionView = () => {
+
+}
+const FinalView = () => {
+
+}
 
 const quizId = window.sessionStorage.getItem('quizId');
 
