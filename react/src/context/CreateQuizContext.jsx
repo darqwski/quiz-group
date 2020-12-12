@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useFormDataContext } from './FormDataManager';
 
 export const CreateQuizContext = React.createContext({});
@@ -21,7 +22,7 @@ export const CreateQuizManager = ({ children }) => {
 			const clearedAnswers = Object.keys(answers).map(key=>({ text: answers[key].text }));
 			const newAnswer = {
 				...(answers[answerIndex] || {}),
-				[name]: value
+				[name]: value || true
 			};
 
 			return ({ ...data, questions: { ...data.questions, [questionIndex]: {
@@ -39,3 +40,7 @@ export const CreateQuizManager = ({ children }) => {
 		</CreateQuizContext.Provider>
 	);
 };
+
+CreateQuizManager.propTypes = {
+	children: PropTypes.any
+}

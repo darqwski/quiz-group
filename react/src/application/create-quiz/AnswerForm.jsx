@@ -16,10 +16,10 @@ const AnswerForm = ({ questionIndex, answerIndex }) => {
 			<WithLabel label="Treść pytania">
 				<input onChange={editAnswerField('text', questionIndex, answerIndex)}/>
 			</WithLabel>
-			<button
+			<a
 				className="btn green lighten-2"
 				onClick={editAnswerField('isCorrect', questionIndex, answerIndex)}
-			>Oznacz poprawność</button>
+			>Oznacz poprawność</a>
 		</div>
 	);
 };

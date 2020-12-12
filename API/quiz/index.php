@@ -3,6 +3,7 @@
 include_once "../../PHP/Database/PDOController.php";
 include_once "../../PHP/Utils/DataStream.php";
 include_once "../../PHP/Utils/RequestAPI.php";
+include_once "../../PHP/Utils/Response.php";
 
 session_start();
 
@@ -12,9 +13,9 @@ function createQuiz() {
     $quiz = $data['quiz'];
     $quizId = PDOController::insertCommand("
     INSERT INTO `quizes` (
-        `quizId`, `name`, `description`, `groupId`, `creatorId`, `isActive`, `categoryId`
+        `quizId`, `name`, `description`, `groupId`, `creatorId`, `isActive`, `categoryId`, `created`
     ) VALUES (
-      NULL, :quizName, :quizDescription, :groupId, :userId, '1', :quizCategory
+      NULL, :quizName, :quizDescription, :groupId, :userId, '1', :quizCategory, NOW()
     );
 ",[
     'quizName'=>$quiz['quizName'],
@@ -32,10 +33,14 @@ function createQuiz() {
         VALUES (NULL, :quizId, :questionText, :questionType);",
             ["quizId"=>$quizId,"questionText"=>$question['text'],"questionType"=>$question['type']]);
         foreach ($question['answers'] as $answer){
+            $isCorrect = 0;
+            if(isset($answer['isCorrect'])){
+                $isCorrect = 1;
+            }
             PDOController::insertCommand("
                 INSERT INTO `answers` (`answerId`, `text`, `isCorrect`, `questionId`) 
                 VALUES (NULL, :text, :isCorrect, :questionId);
-            ", ["text"=>$answer['text'], "isCorrect"=>$answer['isCorrect'],"questionId"=>$questionId]);
+            ", ["text"=>$answer['text'], "isCorrect"=>$isCorrect,"questionId"=>$questionId]);
         }
     }
 

@@ -12,7 +12,7 @@ const App = () => {
 				<Router>
 					{routing.map(({ exact, path, component }, index)=>(
 						<Route
-							exact={exact}
+							exact={true}
 							path={`${ROUTER_APP_PREFIX}${path}`}
 							component={component}
 							key={`routing-${index}`}

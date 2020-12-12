@@ -5,16 +5,23 @@ import { CreateQuizManager } from '../../context/CreateQuizContext';
 import QuestionForm from './QuestionForm';
 import './create-quiz.less';
 import '../../css/index.less';
+import appRequest from '../../utils/appRequest';
+import { useSnackbar } from '../../context/SnackBarManager';
 
 const CreateQuiz = () => {
 	const { formData: { quizName, quizDescription, groupId, quizCategory, questions } } = useFormDataContext();
+	const { addSnackBar } = useSnackbar();
 	const submitForm = e => {
 		e.preventDefault();
 		const parsedQuestions = Object.keys(questions).map(key=>questions[key]).map(question=>({
 			...question,
 			answers: Object.keys(question.answers).map(key=>question.answers[key])
 		}));
-		console.log({ quizName, quizDescription, groupId, quizCategory, questions: parsedQuestions });
+		appRequest({
+			url: '/API/quiz/',
+			method: 'POST',
+			data: { quiz: { quizName, quizDescription, groupId, quizCategory }, questions: parsedQuestions }
+		}).then(({ data: { message } })=>addSnackBar({ text: message }));
 	};
 
 	return (

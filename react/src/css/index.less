@@ -3,3 +3,24 @@
     margin: auto;
   }
 }
+.title-with-actions {
+  display: flex;
+  > .actions {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    > * {
+      margin: auto;
+    }
+  }
+  > .title {
+    flex-grow: 1;
+  }
+}
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  &-col {
+    flex-direction: column;
+  }
+}

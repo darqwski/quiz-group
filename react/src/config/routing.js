@@ -4,6 +4,8 @@ import GroupDashboard from '../application/group/GroupDashboard';
 import QuizDashboard from '../application/quiz/QuizDashboard';
 import GameDashboard from '../application/game/GameDashboard';
 import CreateQuiz from '../application/create-quiz/CreateQuiz';
+import CategoriesDashboard from "../application/admin/categories/CategoriesDashboard";
+import AddCategory from "../application/admin/categories/AddCategory";
 
 export default [
 	{
@@ -35,5 +37,15 @@ export default [
 		inMenu: true,
 		path: '/create-quiz',
 		component: CreateQuiz
+	},
+	{
+		inMenu: true,
+		path: '/admin/categories',
+		component: CategoriesDashboard
+	},
+	{
+		inMenu: true,
+		path: '/admin/categories/add',
+		component: AddCategory
 	}
 ];

@@ -8,15 +8,20 @@ session_start();
 
 function getUserInfo(){
     $userId = $_SESSION['userId'];
-    $data = PDOController::getCommand("
+    $quizes = PDOController::getCommand("
     SELECT *
     FROM users_groups 
-    INNER JOIN users ON users.userId = users_groups.userId
     INNER JOIN groups ON groups.groupId = users_groups.groupId
-    WHERE users.userId = $userId
+    WHERE users_groups.userId = $userId
     ");
+    $unPlayedQuizes = PDOController::getCommand("
+    SELECT * FROM `games` 
+        RIGHT JOIN quizes ON quizes.quizId = games.quizId
+        INNER JOIN `users_groups` ug on quizes.groupId = ug.groupId
+        WHERE ug.userId = :userId
+    ", ['userId'=>$userId]);
 
-    return (new DataStream($data))->toJson();
+    return (new DataStream(['groups'=>$quizes,'availableQuizes'=>$unPlayedQuizes]))->toJson();
 }
 
 switch (RequestAPI::getMethod()) {

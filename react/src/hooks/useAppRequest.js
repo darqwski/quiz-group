@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import appRequest from '../utils/appRequest';
 
-export default ({ name, url, method, data }) => {
+export default ({ name = 'data', url, method, data }) => {
 	const [responseData, setResponseData] = useState();
 	const [loading, setLoading] = useState();
 	const [isRefresh, setRefresh] = useState(false);
