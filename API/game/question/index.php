@@ -22,6 +22,7 @@ function startGame(){
 function getQuestion(){
     //TODO zabezpeczy skończoną grę, zabezpieczyc pytanie bez odpowiedzi, zabezpieczyc pytanie po czasie
     $gameId = startGame();
+
     $data = PDOController::getCommand("
         SELECT questions.text, questionId FROM games
         INNER JOIN questions ON questions.quizId = games.quizId

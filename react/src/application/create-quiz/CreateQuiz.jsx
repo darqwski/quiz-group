@@ -1,15 +1,17 @@
 import React  from 'react';
 import FormDataManager, { useFormDataContext } from '../../context/FormDataManager';
 import FormInput from '../../components/forms/FormInput';
-import { CreateQuizManager } from '../../context/CreateQuizContext';
+import {CreateQuizManager, useCreateQuizContext} from '../../context/CreateQuizContext';
 import QuestionForm from './QuestionForm';
 import './create-quiz.less';
 import '../../css/index.less';
 import appRequest from '../../utils/appRequest';
 import { useSnackbar } from '../../context/SnackBarManager';
+import FormSelect from "../../components/forms/FormSelect";
 
 const CreateQuiz = () => {
 	const { formData: { quizName, quizDescription, groupId, quizCategory, questions } } = useFormDataContext();
+	const { categories } = useCreateQuizContext();
 	const { addSnackBar } = useSnackbar();
 	const submitForm = e => {
 		e.preventDefault();
@@ -46,8 +48,7 @@ const CreateQuiz = () => {
 						</div>
 						<FormInput name="quizName" label="Nazwa quizu" />
 						<FormInput name="quizDescription" label="Opis quizu" />
-						<FormInput name="groupId" label="Grupa dla quizu" />
-						<FormInput name="quizCategory" label="Kategoria quizu" />
+						<FormSelect name="quizCategory" label="Kategoria quizu" data={categories} />
 						<h4>Dane pytań</h4>
 						<div className="questions">
 							{Array.from({ length: 5 }).map((_,i)=>(

@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useFormDataContext } from './FormDataManager';
+import useAppRequest from '../hooks/useAppRequest';
+import Loading from '../components/loading/Loading';
 
 export const CreateQuizContext = React.createContext({});
 
@@ -14,7 +16,8 @@ export const CreateQuizManager = ({ children }) => {
 			...data.questions[index], [name] : value
 		} } }));
 	};
-
+	const { data, loading } = useAppRequest({ url: '/API/category/' });
+	const categories = (data||[]).map(({name, categoryId})=>({value: categoryId, text: name}))
 	const editAnswerField = (name, questionIndex, answerIndex) => ({ target: { value } }) => {
 		const clearAnswers = name === 'isCorrect';
 		setFormData(data=>{
@@ -35,12 +38,12 @@ export const CreateQuizManager = ({ children }) => {
 
 
 	return (
-		<CreateQuizContext.Provider value={{ editQuestionField, editAnswerField }}>
-			{children}
+		<CreateQuizContext.Provider value={{ editQuestionField, editAnswerField, categories }}>
+			{loading ? <Loading/> : children}
 		</CreateQuizContext.Provider>
 	);
 };
 
 CreateQuizManager.propTypes = {
 	children: PropTypes.any
-}
+};

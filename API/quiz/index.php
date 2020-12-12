@@ -13,14 +13,13 @@ function createQuiz() {
     $quiz = $data['quiz'];
     $quizId = PDOController::insertCommand("
     INSERT INTO `quizes` (
-        `quizId`, `name`, `description`, `groupId`, `creatorId`, `isActive`, `categoryId`, `created`
+        `quizId`, `name`, `description`, `creatorId`, `isActive`, `categoryId`, `created`
     ) VALUES (
-      NULL, :quizName, :quizDescription, :groupId, :userId, '1', :quizCategory, NOW()
+      NULL, :quizName, :quizDescription, :userId, '1', :quizCategory, NOW()
     );
 ",[
     'quizName'=>$quiz['quizName'],
     'quizDescription'=>$quiz['quizDescription'],
-    'groupId'=>$quiz['groupId'],
     'userId'=>$_SESSION['userId'],
     'quizCategory'=>$quiz['quizCategory']
     ]);
