@@ -8,7 +8,6 @@ function generatePage($path = '/'){
     <head>
         <meta charset='UTF-8'>
         <title>Quiz-Group</title>
-        <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
         <link rel='stylesheet' href='".$path.BUILD_PATH."materialize.min.css' />
         <style>
             #react-app, body, html {

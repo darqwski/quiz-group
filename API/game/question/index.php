@@ -29,7 +29,7 @@ function getQuestion(){
         LEFT JOIN user_answers ON user_answers.questonId = questions.questionId
         WHERE user_answers.questonId IS NULL AND games.gameId = $gameId;
     ");
-    if(count($data) == 0){
+    if(!isset($data[0]['questionId'])){
         unset($_SESSION['gameId']);
 
         return;

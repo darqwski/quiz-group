@@ -1,23 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import appRequest from '../../utils/appRequest';
+import React from 'react';
 import Loading from '../../components/loading/Loading';
 import useAppRequest from '../../hooks/useAppRequest';
+import SingleQuiz from './SingleQuiz';
 import './dashboard.less';
-
-const SingleQuiz = ({ quizId, name, description }) => {
-	const onClick=()=>{
-		window.sessionStorage.setItem('quizId',quizId);
-		window.location.href='../quiz/';
-	}
-
-	return (
-		<div className="single-quiz card clickable" onClick={onClick}>
-			<div className="card-title">{name}</div>
-			<div className="card-content">{description}</div>
-		</div>
-	)
-
-}
 
 const Dashboard = () => {
 	const { data, loading } = useAppRequest({
@@ -34,9 +19,11 @@ const Dashboard = () => {
 				<div className="dashboard-tab purple darken-2 white-text clickable">Proponowane</div>
 				<div className="dashboard-tab purple darken-2 white-text clickable">Kategorie</div>
 			</div>
-			{data?.recommended?.map((item,index)=>(
-				<SingleQuiz {...item} key={`single-quiz-${index}`} />
-			))}
+			<div className="flex">
+				{data && data.recommended.map((item,index)=>(
+					<SingleQuiz {...item} key={`single-quiz-${index}`} />
+				))}
+			</div>
 		</div>
 	);
 };

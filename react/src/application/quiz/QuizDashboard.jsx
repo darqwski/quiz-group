@@ -1,24 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import useAppRequest from '../../hooks/useAppRequest';
-import Loading from "../../components/loading/Loading";
+import Loading from '../../components/loading/Loading';
+import { Button } from 'react-materialize';
+import './quiz-dashboard.less';
 
 const quizId = window.sessionStorage.getItem('quizId');
-
-const ReadyToPlayView = ({ quiz = {} }) => {
-	const { description } = quiz;
-
-	return(
-		<div>
-			<p>{description}</p>
-			<h3>Aby zagrać wciśnij</h3>
-			<button onClick={()=>{window.location.href='../game/';}}>Rozpocznij quiz</button>
-		</div>
-	)
-}
-const PlayedView = () => {
-	return (<div>Już grałeś w ten quiz</div>)
-}
 
 const QuizDashboard = () => {
 	const { quizInfo, loading } = useAppRequest({
@@ -27,11 +13,31 @@ const QuizDashboard = () => {
 		method: 'POST',
 		data: { quizId }
 	});
-
-	const { played, quiz, game } = quizInfo || {};
+	const { quiz } = quizInfo || {} ;
+	const { description, name, category } = quiz || {};
 
 	return loading ? <Loading/> : (
-		played ? <PlayedView quiz={quiz} game={game}/> : <ReadyToPlayView  quiz={quiz} />
+		<div className="ready-to-play">
+			<div className="ready-to-play-name blue darken-4 white-text">{name}</div>
+			<div className="ready-to-play-description">{description}</div>
+			<div className="ready-to-play-details">
+				<p>Kategoria : {category}</p>
+			</div>
+			<div className="ready-to-play-main">
+				{
+					quizInfo?.played ? (
+						<p>Quiz został już rozwiazany</p>
+					) : (
+						<Button
+							flat
+							onClick={()=>{window.location.href='../game/';}}
+						>
+							START
+						</Button>
+					)
+				}
+			</div>
+		</div>
 	);
 };
 

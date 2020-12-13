@@ -16,11 +16,10 @@ function getQuizInfo(){
     ", ["quizId"=>$quizId, "userId"=>$userId]);
 
     $quiz = PDOController::getCommand("
-        SELECT name, count(q.quizId) as numberOfQuestions FROM quizes
+        SELECT quizes.name, count(q.quizId)  as numberOfQuestions, quizes.description, c.name as `category` FROM quizes
         INNER JOIN questions q on quizes.quizId = q.quizId
-        INNER JOIN users_groups ug on quizes.groupId = ug.groupId AND ug.userId = :userId
-        WHERE q.quizId = :quizId
-    ", ["quizId"=>$quizId, "userId"=>$userId]);
+        INNER JOIN categories c on quizes.categoryId = c.categoryId
+    ", ["quizId"=>$quizId]);
 
     if(count($game) == 0){
         return (new DataStream([
