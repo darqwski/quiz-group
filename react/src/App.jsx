@@ -4,23 +4,26 @@ import SnackBarManager from './context/SnackBarManager';
 import routing from './config/routing';
 import { ROUTER_APP_PREFIX } from './config/app-config';
 import ModalManager from './context/ModalManager';
+import AppManager from './context/AppManager';
 
 const App = () => {
 	return (
-		<ModalManager>
-			<SnackBarManager>
-				<Router>
-					{routing.map(({ exact, path, component }, index)=>(
-						<Route
-							exact={true}
-							path={`${ROUTER_APP_PREFIX}${path}`}
-							component={component}
-							key={`routing-${index}`}
-						/>
-					))}
-				</Router>
-			</SnackBarManager>
-		</ModalManager>
+		<AppManager>
+			<ModalManager>
+				<SnackBarManager>
+					<Router>
+						{routing.map(({ path, component }, index)=>(
+							<Route
+								exact
+								path={`${ROUTER_APP_PREFIX}${path}`}
+								component={component}
+								key={`routing-${index}`}
+							/>
+						))}
+					</Router>
+				</SnackBarManager>
+			</ModalManager>
+		</AppManager>
 	);
 };
 

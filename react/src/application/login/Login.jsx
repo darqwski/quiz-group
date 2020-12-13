@@ -4,6 +4,8 @@ import FormInput from '../../components/forms/FormInput';
 import FormDataManager, { useFormDataContext } from '../../context/FormDataManager';
 import appRequest from '../../utils/appRequest';
 import { useSnackbar } from '../../context/SnackBarManager';
+import {Button} from "react-materialize";
+import './login.less';
 
 const Login = () => {
 	const {  formData: { login, password } } = useFormDataContext();
@@ -25,22 +27,21 @@ const Login = () => {
 		});
 	};
 
-	const logout = () => {
-		appRequest({
-			url:'/API/login',
-			method: 'DELETE'
-		});
-	};
-
 	return (
-		<div>
-			<form onSubmit={onSubmit}>
-				<FormInput label="Login" name="login" />
-				<FormInput label="Password" name="password" type="password" />
-				<button className="btn">Login</button>
+		<div className="login-panel">
+			<form className="card container" onSubmit={onSubmit}>
+				<div className="card-title">
+					<h3>Logowanie do QUIZ GROUP</h3>
+				</div>
+				<div className="card-content">
+					<FormInput label="Login" name="login" />
+					<FormInput label="Password" name="password" type="password" />
+				</div>
+				<div className="card-action">
+					<Button type="submit" className="deep-purple darken-4">Zaloguj</Button>
+					<a className="btn-flat deep-purple-text darken-4" href="../register/">Zarejestruj</a>
+				</div>
 			</form>
-			<button className="btn" onClick={logout}>Logout</button>
-
 		</div>
 	);
 };

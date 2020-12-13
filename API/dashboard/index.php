@@ -17,12 +17,13 @@ function getPopularQuizes(){
 }
 
 function getRecommendedQuizes(){
+    $userId = isset($_SESSION['userId']) ? $_SESSION['userId'] : false;
     return PDOController::getCommand("
         SELECT quizes.*, c.name as categoryName FROM `quizes`
-        LEFT JOIN games on games.quizId = quizes.quizId AND games.userId = :userId
+        LEFT JOIN games on games.quizId = quizes.quizId ".($userId ? "AND games.userId = :userId " : "")."
         INNER JOIN categories c on quizes.categoryId = c.categoryId
         WHERE games.gameId IS NULL
-",['userId'=>$_SESSION['userId']]);
+",['userId'=>$userId]);
 }
 
 function getDashboardInfo() {
