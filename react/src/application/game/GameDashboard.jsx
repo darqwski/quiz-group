@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import useAppRequest from '../../hooks/useAppRequest';
+import React from 'react';
 import Loading from '../../components/loading/Loading';
-import appRequest from '../../utils/appRequest';
+import './game.less';
+import { GameContextManager, useGame } from './GameContext';
+import StartCountdown from './StartCountdown';
+import QuestionView from './QuestionView';
+import FinalView from './FinalView';
 
 /**
  *
@@ -18,78 +20,27 @@ import appRequest from '../../utils/appRequest';
  *
  */
 
-const PossibleAnswer = ({ answerId, text, setResult, addAnswer, refresh, setLastAnswer }) => {
-
-	const onClick = () => {
-		appRequest({
-			url: '/API/game/answer/',
-			data: { answer: answerId },
-			method: 'POST'
-		}).then(({ data: { correctAnswer: { answerId: correctAnswer }, isLastAnswer, result } })=>{
-			addAnswer(correctAnswer === answerId);
-			if(isLastAnswer){
-				setResult(result);
-				setLastAnswer(true);
-			} else {
-				setTimeout(refresh, 5000);
-			}
-		});
-	};
-
-	return (
-		<button onClick={onClick}>{text}</button>
-	);
-};
-
-const StartCountdown = () => {
-
-}
-const QuestionView = () => {
-
-}
-const FinalView = () => {
-
-}
-
-const quizId = window.sessionStorage.getItem('quizId');
-
 const GameDashboard = () => {
-	const [lastAnswer, setLastAnswer] = useState(false);
-	const [answers, setAnswers] = useState([]);
-	const [result, setResult] = useState([]);
-	const addAnswer = (isCorrect)=>setAnswers(state=>[...state, isCorrect]);
+	const { view } = useGame();
 
-	const { question, loading, refresh } = useAppRequest({
-		url: '/API/game/question/',
-		method: 'POST',
-		data: { quizId },
-		name: 'question'
-	});
-
-	return loading ? <Loading/> : (
-		<div>
-			<p>{question?.question?.text}</p>
-			<ul>
-				{question?.answers.map(({ answerId, text })=>(
-					<PossibleAnswer
-						answerId={answerId}
-						text={text}
-						refresh={refresh}
-						addAnswer={addAnswer}
-						setResult={setResult}
-					/>
-				))}
-			</ul>
-			<div>
-				<h3>Wynik</h3>
-				{answers.map(i=><p>{i ? 'DOBRZE!' : "ZLE"}</p>)}
-				<p>Podsumowanie</p>
-				<p>{result}</p>
-			</div>
-		</div>
-	);
+	if(view === 'countdown') {
+		return <StartCountdown />;
+	}
+	if(view === 'question'){
+		return <QuestionView />;
+	}
+	if( view === 'final'){
+		return <FinalView/>;
+	}
+	return <Loading/>;
 };
 
 GameDashboard.propTypes = {};
 
-export default GameDashboard;
+const GameDashboardWithContext = () => (
+	<GameContextManager>
+		<GameDashboard />
+	</GameContextManager>
+);
+
+export default GameDashboardWithContext;

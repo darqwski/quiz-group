@@ -1,0 +1,94 @@
+html, body, #react-app {
+  height: 100%;
+}
+.game-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.game {
+  &-title{
+    font-size: 3rem;
+    padding-top:1rem;
+    padding-bottom:1rem;
+    text-align: center;
+  }
+  &-question {
+    font-size: 2rem;
+    padding-top: 3rem;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+  &-answers {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+  }
+  &-answer {
+    height: 10rem;
+    width: 40%;
+    padding: 2rem;
+    margin: auto;
+    font-size: 2rem;
+    text-align: center;
+  }
+  &-border {
+    height: 1rem;
+  }
+  &-result {
+    height: 4rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+  &-loader {
+    height: 1rem;
+  }
+  &-progress {
+    background-color: green;
+    height: 100%;
+  }
+  &-indicator {
+
+  }
+}
+.final {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &-top {
+    flex-grow: 1;
+  }
+  &-text {
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 1rem;
+    font-size: 2rem;
+  }
+  &-middle {
+    font-size: 4rem;
+    text-align: center;
+    padding: 2rem;
+  }
+  &-bottom {
+    margin-top: 2rem;
+    flex-grow: 2;
+    > .btn-flat {
+      display: block;
+      font-size: 2rem;
+      margin: auto;
+    }
+  }
+}
+.countdown {
+  height: 100%;
+  display: flex;
+  &-text {
+    margin: auto;
+    font-size: 6rem;
+    opacity: 0;
+  }
+  &-show {
+    opacity: 1;
+    transition: 0.1s;
+  }
+}
