@@ -4,9 +4,9 @@ import Loading from '../../components/loading/Loading';
 import { Button } from 'react-materialize';
 import './quiz-dashboard.less';
 
-const quizId = window.sessionStorage.getItem('quizId');
 
 const QuizDashboard = () => {
+	const quizId = window.sessionStorage.getItem('quizId');
 	const { quizInfo, loading } = useAppRequest({
 		url:'/API/quiz-info/',
 		name: 'quizInfo',

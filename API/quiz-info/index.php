@@ -19,6 +19,7 @@ function getQuizInfo(){
         SELECT quizes.name, count(q.quizId)  as numberOfQuestions, quizes.description, c.name as `category` FROM quizes
         INNER JOIN questions q on quizes.quizId = q.quizId
         INNER JOIN categories c on quizes.categoryId = c.categoryId
+        WHERE quizes.quizId = :quizId
     ", ["quizId"=>$quizId]);
 
     if(count($game) == 0){

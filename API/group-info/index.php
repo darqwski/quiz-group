@@ -21,7 +21,7 @@ function getGroupInfo(){
         SELECT q.quizId, q.categoryId, q.name FROM users_groups
         INNER JOIN `groups` g on users_groups.groupId = g.groupId
         INNER JOIN quizes q on g.groupId = q.groupId
-        WHERE userGroupId = :userGroupId AND users_groups.userId = :userId
+        WHERE userGroupId = :userGroupId AND users_groups.userId = :userId AND q.isActive = 1
     ", ["userGroupId"=>$userGroupId, "userId"=>$userId]);
 
     return (new DataStream([

@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 const SingleQuiz = ({ quizId, name, description, categoryName }) => {
 	const onClick=()=>{
+		console.log(quizId)
 		window.sessionStorage.setItem('quizId',quizId);
+		console.log(quizId)
+		console.log(window.sessionStorage.getItem('quizId'))
+
 		window.location.href='../quiz/';
 	};
 

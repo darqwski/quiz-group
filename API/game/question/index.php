@@ -5,7 +5,7 @@ include_once "../../../PHP/Database/PDOController.php";
 include_once "../../../PHP/Utils/DataStream.php";
 include_once "../../../PHP/Utils/RequestAPI.php";
 
-
+session_start();
 
 function startGame(){
     $quizId = RequestAPI::getJSON()['quizId'];
