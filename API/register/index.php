@@ -25,8 +25,8 @@ function register(){
         return Response::message("Login or email is busy", 401);
     }
     $result = PDOController::insertCommand("
-INSERT INTO `users` (`userId`, `login`, `password`, `isConfirmed`, `isActive`, `email`) 
-VALUES (NULL, :login, :password, '1', '1', :email);
+INSERT INTO `users` (`userId`, `login`, `password`, `isConfirmed`, `isActive`, `email`, `joined`) 
+VALUES (NULL, :login, :password, '1', '1', :email, NOW());
 ", ["login"=>$data['login'], "password"=>md5($data['password']), "email" => $data['email']]);
     return Response::message("User has been created successfully");
 }

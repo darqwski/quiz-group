@@ -1,0 +1,20 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  &-title {
+    font-size: 3rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  &-section {
+    flex-grow: 1;
+  }
+  &-border {
+    height: 2rem;
+  }
+  &-actions {
+    > * {
+      display: block;
+    }
+  }
+}

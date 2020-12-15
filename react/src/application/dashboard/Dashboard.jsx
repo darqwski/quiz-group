@@ -15,7 +15,9 @@ const Dashboard = () => {
 	return loading ? <Loading /> : (
 		<div>
 			<div className="dashboard-nav card purple darken-4 white-text">
-				<div className="dashboard-menu"></div>
+				<div className="dashboard-menu">
+
+				</div>
 				<div className="dashboard-logo">QUIZ-GROUP</div>
 				<div className="dashboard-auth">
 					{isLogged() ? (

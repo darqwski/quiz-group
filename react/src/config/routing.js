@@ -7,6 +7,7 @@ import CreateQuiz from '../application/create-quiz/CreateQuiz';
 import CategoriesDashboard from '../application/admin/categories/CategoriesDashboard';
 import AddCategory from '../application/admin/categories/AddCategory';
 import Register from '../application/register/Register';
+import ProfileDashboard from '../application/profile/ProfileDashboard';
 
 export default [
 	{
@@ -53,5 +54,10 @@ export default [
 		inMenu: true,
 		path: '/register',
 		component: Register
+	},
+	{
+		inMenu: true,
+		path: '/profile',
+		component: ProfileDashboard
 	}
 ];
