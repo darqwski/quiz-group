@@ -27,12 +27,38 @@ function getRecommendedQuizes(){
 ",['userId'=>$userId]);
 }
 
-function getDashboardInfo() {
+function getCategories() {
+    return (new DataStream())
+        ->getFromQuery("
+            SELECT categories.*
+            FROM categories 
+            ORDER BY categories.name ASC
+        ")->get();
+}
 
+function getLastNotice(){
+    return (new DataStream())
+        ->getFromQuery("
+            SELECT notices.*, users.login
+            FROM notices 
+            INNER JOIN users ON users.userId = notices.author
+            ORDER BY date
+            LIMIT 1
+        ")->get()[0];
+}
+
+function getDashboardInfo() {
     $popularQuizes = getPopularQuizes();
     $recommendedQuizes = getRecommendedQuizes();
-    $categories = "";
-    return ((new DataStream(['popular'=>$popularQuizes,"recommended"=>$recommendedQuizes, "categories"=>$categories])))->toJson();
+    $categories = getCategories();
+    $lastInfo = getLastNotice();
+
+    return ((new DataStream([
+        'popular'=>$popularQuizes,
+        "recommended"=>$recommendedQuizes,
+        "categories"=>$categories,
+        "lastInfo"=>$lastInfo
+    ])))->toJson();
 }
 
 switch (RequestAPI::getMethod()) {

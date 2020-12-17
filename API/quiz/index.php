@@ -46,8 +46,22 @@ function createQuiz() {
     echo Response::message("Quiz has been added correctly");
 }
 
+function getQuizes(){
+    if(isset($_GET['categoryId'])){
+        return (new DataStream())
+            ->getFromQuery("
+                SELECT quizes.*,c.name as categoryName FROM quizes 
+                INNER JOIN categories c on quizes.categoryId = c.categoryId
+                WHERE c.categoryId = :categoryId
+                ",['categoryId'=>$_GET['categoryId']])
+            ->toJson();
+    }
+}
+
+
 switch (RequestAPI::getMethod()) {
     case "GET":
+        echo getQuizes();
         break;
     case "POST":
         echo createQuiz();

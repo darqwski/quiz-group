@@ -12,7 +12,6 @@ function getCategories(){
             SELECT categories.*, count(*) as quizes
             FROM categories 
             LEFT JOIN quizes q on categories.categoryId = q.categoryId
-            WHERE q.isActive = 1
             GROUP BY categoryId
             ORDER BY categories.name ASC
         ")->toJson();

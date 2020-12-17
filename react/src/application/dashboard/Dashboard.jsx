@@ -1,58 +1,103 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import useAppRequest from '../../hooks/useAppRequest';
-import SingleQuiz from './SingleQuiz';
-import './dashboard.less';
 import { useAppContext } from '../../context/AppManager';
+import appRequest from '../../utils/appRequest';
+import SingleQuiz from './SingleQuiz';
+import SingleCategoryView from './SingleCategoryView';
+import './dashboard.less';
+import NavBar from './NavBar';
 
 const Dashboard = () => {
 	const { data, loading } = useAppRequest({
 		name: 'data',
 		url: '/API/dashboard/',
 	});
-	const { isLogged, login } = useAppContext();
+	const [ view, setView ] = useState('popular');
+	const [ categoryQuizes, setCategoryQuizes ] = useState();
+	const [ categoryId, setCategoryId ] = useState();
+	const { isLogged } =useAppContext();
+	useEffect(()=>{
+		if(!categoryId){
+			return;
+		}
+
+		appRequest({
+			url: `/API/quiz/?categoryId=${categoryId}`
+		}).then(({ data })=>setCategoryQuizes(data));
+	}, [categoryId]);
 
 	return loading ? <Loading /> : (
-		<div>
-			<div className="dashboard-nav card purple darken-4 white-text">
-				<div className="dashboard-menu">
-
-				</div>
-				<div className="dashboard-logo">QUIZ-GROUP</div>
-				<div className="dashboard-auth">
-					{isLogged() ? (
-						<>
-							<a className="btn-flat white-text" href="../profile/">
-								<i className="material-icons left">person</i>
-								{login}
-							</a>
-							<a className="btn-flat white-text" href="?logout">
-								Wyloguj
-							</a>
-						</>
-					) : (
-						<>
-							<a className="btn-flat white-text" href="../login/">
-									Zaloguj
-							</a>
-							<a className="btn-flat white-text" href="../register/">
-								Zarejestruj
-							</a>
-						</>
-					)}
+		<div className="dashboard">
+			<NavBar />
+			<div className="dashboard-description">
+				<div className="card dashboard-notice">
+					<div className="dashboard-notice-text">
+						{data?.lastInfo.text}
+					</div>
+					<div className="flex">
+						<div className="dashboard-notice-author">{data?.lastInfo.login}</div>
+						<div className="dashboard-notice-date">{data?.lastInfo.date}</div>
+					</div>
 				</div>
 			</div>
-			<div className="dashboard-description"> Może jakiś nius?</div>
+			{isLogged() && (
+				<a className="dashboard-add-quiz blue darken-2 white-text clickable" href="../create-quiz" >
+					Brak ciekawych quizów? Dodaj własny!
+				</a>
+			)}
 			<div className="dashboard-tabs">
-				<div className="dashboard-tab purple darken-2 white-text clickable">Popularne</div>
-				<div className="dashboard-tab purple darken-2 white-text clickable">Proponowane</div>
-				<div className="dashboard-tab purple darken-2 white-text clickable">Kategorie</div>
+				<div
+					className="dashboard-tab purple darken-2 white-text clickable"
+					onClick={()=>setView('popular')}
+				>
+					Popularne
+				</div>
+				<div
+					className="dashboard-tab purple darken-2 white-text clickable"
+					onClick={()=>setView('proposed')}
+				>
+					Proponowane
+				</div>
+				<div
+					className="dashboard-tab purple darken-2 white-text clickable"
+					onClick={()=>setView('categories')}
+				>
+					Kategorie
+				</div>
 			</div>
-			<div className="flex">
-				{data && data.recommended.map((item,index)=>(
-					<SingleQuiz {...item} key={`single-quiz-${index}`} />
-				))}
-			</div>
+			{view === 'popular' && (
+				<div className="flex">
+					{data && data.popular.map((item,index)=>(
+						<SingleQuiz {...item} key={`single-quiz-${index}`} />
+					))}
+				</div>
+			)}
+			{view === 'proposed' && (
+				<div className="flex">
+					{data && data.recommended.map((item,index)=>(
+						<SingleQuiz {...item} key={`single-quiz-${index}`} />
+					))}
+				</div>
+			)}
+			{view ==='categories' && (
+				<div className="flex">
+					{data && data.categories.map((item,index)=>(
+						<SingleCategoryView
+							category={item}
+							setCategoryId={setCategoryId}
+							setView={setView}
+							key={`SingleCategoryView-${index}`} />
+					))}
+				</div>
+			)}
+			{view ==='selected-category' && (
+				<div className="flex">
+					{categoryQuizes && categoryQuizes.map((item,index)=>(
+						<SingleQuiz {...item} key={`single-quiz-${index}`} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 };
