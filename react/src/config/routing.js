@@ -8,6 +8,8 @@ import CategoriesDashboard from '../application/admin/categories/CategoriesDashb
 import AddCategory from '../application/admin/categories/AddCategory';
 import Register from '../application/register/Register';
 import ProfileDashboard from '../application/profile/ProfileDashboard';
+import AdminDashboard from "../application/admin/dashboard/AdminDashboard";
+import QuizesDashboard from "../application/admin/quizes/QuizesDashboard";
 
 export default [
 	{
@@ -39,6 +41,16 @@ export default [
 		inMenu: true,
 		path: '/create-quiz',
 		component: CreateQuiz
+	},
+	{
+		inMenu: true,
+		path: '/admin/dashboard',
+		component: AdminDashboard
+	},
+	{
+		inMenu: true,
+		path: '/admin/quizes',
+		component: QuizesDashboard
 	},
 	{
 		inMenu: true,
