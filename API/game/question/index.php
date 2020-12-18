@@ -3,12 +3,18 @@
 
 include_once "../../../PHP/Database/PDOController.php";
 include_once "../../../PHP/Utils/DataStream.php";
+include_once "../../../PHP/Utils/Response.php";
 include_once "../../../PHP/Utils/RequestAPI.php";
 
 session_start();
 
 function startGame(){
     $quizId = RequestAPI::getJSON()['quizId'];
+    if(!isset($_SESSION['userId'])){
+        //FOR UNLOGGED USER
+        $_SESSION['userId'] = time();
+        $_SESSION['randomUserId'] = true;
+    }
     if( !isset($_SESSION['gameId']) ){
         $gameId = PDOController::insertCommand("
         INSERT INTO `games` (`gameId`, `userId`, `quizId`, `result`, `start`, `stop`) 
@@ -22,17 +28,17 @@ function startGame(){
 function getQuestion(){
     //TODO zabezpeczy skończoną grę, zabezpieczyc pytanie bez odpowiedzi, zabezpieczyc pytanie po czasie
     $gameId = startGame();
-
     $data = PDOController::getCommand("
         SELECT questions.text, questionId FROM games
         INNER JOIN questions ON questions.quizId = games.quizId
-        LEFT JOIN user_answers ON user_answers.questonId = questions.questionId
-        WHERE user_answers.questonId IS NULL AND games.gameId = $gameId;
+        LEFT JOIN user_answers ON user_answers.questonId = questions.questionId AND user_answers.gameId =$gameId
+        WHERE games.gameId = $gameId AND user_answers.answerId IS NULL
     ");
+
     if(!isset($data[0]['questionId'])){
         unset($_SESSION['gameId']);
 
-        return;
+        Response::message('Something goes wrong', 500);
     }
     $randomIndex = array_rand($data, 1);
     $question = $data[$randomIndex];

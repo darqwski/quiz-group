@@ -8,6 +8,7 @@ export const useAppContext = () => useContext(AppContext);
 export const AppManager = ({ children }) => {
 	const { serverData: { login } } = window;
 	const isLogged = () => !!login;
+	console.log(login)
 	return (
 		<AppContext.Provider value={{
 			isLogged, login

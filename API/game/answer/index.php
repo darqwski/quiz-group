@@ -12,8 +12,8 @@ function isLastAnswer(){
     $leftQuestions = PDOController::getCommand("
         SELECT questions.text, questionId FROM games
         INNER JOIN questions ON questions.quizId = games.quizId
-        LEFT JOIN user_answers ON user_answers.questonId = questions.questionId
-        WHERE user_answers.questonId IS NULL AND games.gameId = $gameId;
+        LEFT JOIN user_answers ON user_answers.questonId = questions.questionId AND user_answers.gameId =:gameId
+        WHERE games.gameId = :gameId AND user_answers.answerId IS NULL
                 ", ["gameId"=>$gameId]
     );
 
@@ -59,6 +59,10 @@ function answerQuestion(){
         $response['result']=calculateResult();
         endGame($response['result']);
         unset($_SESSION['gameId']);
+        if(isset($_SESSION['randomUserId'])){
+            unset($_SESSION['userId']);
+            unset($_SESSION['randomUserId']);
+        }
     }
 
     return (new DataStream($response))->toJson();

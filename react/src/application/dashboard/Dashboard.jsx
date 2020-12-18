@@ -53,12 +53,12 @@ const Dashboard = () => {
 				>
 					Popularne
 				</div>
-				<div
+				{false &&(<div
 					className="dashboard-tab purple darken-2 white-text clickable"
 					onClick={()=>setView('proposed')}
 				>
 					Proponowane
-				</div>
+				</div>)}
 				<div
 					className="dashboard-tab purple darken-2 white-text clickable"
 					onClick={()=>setView('categories')}

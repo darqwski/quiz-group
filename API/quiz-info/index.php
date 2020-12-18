@@ -7,7 +7,7 @@ include_once "../../PHP/Utils/RequestAPI.php";
 session_start();
 
 function getQuizInfo(){
-    $userId = $_SESSION['userId'];
+    $userId = isset($_SESSION['userId']) ? $_SESSION['userId'] : null;
     $quizId = RequestAPI::getJSON()['quizId'];
 
     $game = PDOController::getCommand("

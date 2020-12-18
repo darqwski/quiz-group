@@ -9,11 +9,11 @@ session_start();
 
 function getPopularQuizes(){
     return PDOController::getCommand("
-        SELECT q.*,c.name as categoryName, COUNT(*) as played FROM games 
-        INNER JOIN quizes q on games.quizId = q.quizId
+        SELECT q.*, c.name as category, count(q.quizId)-IF(games.gameId IS NULL, 1, 0) AS playedTimes FROM games 
+        RIGHT JOIN quizes q ON q.quizId = games.quizId 
         INNER JOIN categories c on q.categoryId = c.categoryId
-        WHERE q.isActive = 1
-        GROUP BY games.quizId
+        GROUP BY q.quizId
+        ORDER BY count(q.quizId) DESC
 ");
 }
 
