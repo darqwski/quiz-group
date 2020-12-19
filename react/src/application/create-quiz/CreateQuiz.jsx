@@ -1,29 +1,71 @@
 import React  from 'react';
 import FormDataManager, { useFormDataContext } from '../../context/FormDataManager';
 import FormInput from '../../components/forms/FormInput';
-import {CreateQuizManager, useCreateQuizContext} from '../../context/CreateQuizContext';
+import { CreateQuizManager, useCreateQuizContext } from '../../context/CreateQuizContext';
 import QuestionForm from './QuestionForm';
 import './create-quiz.less';
 import '../../css/index.less';
 import appRequest from '../../utils/appRequest';
 import { useSnackbar } from '../../context/SnackBarManager';
-import FormSelect from "../../components/forms/FormSelect";
+import FormSelect from '../../components/forms/FormSelect';
+import { useModal } from '../../context/ModalManager';
+import SummaryQuiz from './SummaryQuiz';
 
 const CreateQuiz = () => {
-	const { formData: { quizName, quizDescription, groupId, quizCategory, questions } } = useFormDataContext();
+	const {
+		formData: { quizName, quizDescription, groupId, quizCategory, questions },
+		addError, clearErrors, errorMessages
+	} = useFormDataContext();
 	const { categories } = useCreateQuizContext();
+	const { addModal } = useModal();
 	const { addSnackBar } = useSnackbar();
+
 	const submitForm = e => {
+		clearErrors();
 		e.preventDefault();
 		const parsedQuestions = Object.keys(questions).map(key=>questions[key]).map(question=>({
 			...question,
-			answers: Object.keys(question.answers).map(key=>question.answers[key])
+			type: 1,
+			answers: question.answers ? Object.keys(question.answers).map(key=>question.answers[key]) : []
 		}));
-		appRequest({
-			url: '/API/quiz/',
-			method: 'POST',
-			data: { quiz: { quizName, quizDescription, groupId, quizCategory }, questions: parsedQuestions }
-		}).then(({ data: { message } })=>addSnackBar({ text: message }));
+		if(parsedQuestions.length !== 5) {
+			addError('Pytań musi być 5');
+			return;
+		}
+		for(let index =0;index<parsedQuestions.length;index++){
+			const question = parsedQuestions[index];
+
+			const { answers } = question;
+			if(answers.length !== 4){
+				addError(`Pytanie ${parsedQuestions.indexOf(question)} nie zawiera 4 odpowiedzi`);
+				return;
+			}
+			const correctAnswers = answers?.filter(({ isCorrect })=>+isCorrect === 1)?.length;
+			if(correctAnswers === 0){
+				addError(`Pytanie ${index} nie zawiera poprawnej odpowiedzi`);
+				return;
+			} else if(correctAnswers !== 1) {
+				addError(`Pytanie ${index} nie zawiera nadmiarną ilość poprawnych odpowiedzi`);
+				return;
+			}
+		}
+
+		addModal({
+			children: <SummaryQuiz
+				parsedQuestions={parsedQuestions}
+				quizName={quizName}
+				quizDescription={quizDescription}
+			/>,
+			confirmText: 'Zatwierdź',
+			declineText: 'Anuluj',
+			confirmAction: () => appRequest({
+				url: '/API/quiz/',
+				method: 'POST',
+				data: { quiz: { quizName, quizDescription, groupId, quizCategory }, questions: parsedQuestions }
+			}).then(({ data: { message } })=>addSnackBar({ text: message })).then(()=>{
+				history.push('summary');
+			})
+		});
 	};
 
 	return (
@@ -58,6 +100,13 @@ const CreateQuiz = () => {
 					</div>
 				</div>
 				<div className="card-action">
+					{!!errorMessages?.length &&(
+						<div>
+							{errorMessages.map((text, index)=>(
+								<p className="error-text" key={`error-text-${index}`}>{text}</p>
+							))}
+						</div>
+					)}
 					<button type="submit" className="btn-large green"> Zapisz quiz </button>
 				</div>
 			</form>

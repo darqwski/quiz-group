@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import { useFormDataContext } from './FormDataManager';
 import useAppRequest from '../hooks/useAppRequest';
@@ -11,13 +11,12 @@ export const useCreateQuizContext = () => useContext(CreateQuizContext);
 
 export const CreateQuizManager = ({ children }) => {
 	const { setFormData } = useFormDataContext();
+	const { data, loading } = useAppRequest({ url: '/API/category/' });
 	const editQuestionField = (name, index) => ({ target: { value } }) => {
 		setFormData(data=>({ ...data, questions: { ...data.questions, [index]: {
 			...data.questions[index], [name] : value
 		} } }));
 	};
-	const { data, loading } = useAppRequest({ url: '/API/category/' });
-	const categories = (data||[]).map(({name, categoryId})=>({value: categoryId, text: name}))
 	const editAnswerField = (name, questionIndex, answerIndex) => ({ target: { value } }) => {
 		const clearAnswers = name === 'isCorrect';
 		setFormData(data=>{
@@ -35,6 +34,7 @@ export const CreateQuizManager = ({ children }) => {
 			} } });
 		});
 	};
+	const categories = (data||[]).map(({ name, categoryId })=>({ value: categoryId, text: name }));
 
 
 	return (

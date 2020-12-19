@@ -43,7 +43,7 @@ function createQuiz() {
         }
     }
 
-    echo Response::message("Quiz has been added correctly");
+    return Response::message("Quiz has been added correctly");
 }
 
 function getQuizes(){

@@ -12,9 +12,7 @@ const QuestionForm = ({ index }) => {
 			<WithLabel label="Treść pytania">
 				<input onChange={editQuestionField('text', index)}/>
 			</WithLabel>
-			<WithLabel label="Typ pytania">
-				<input onChange={editQuestionField('type', index)}/>
-			</WithLabel>
+			<input onChange={editQuestionField('type', index)} type="hidden" value="1" />
 			<h5>Odpowiedzi {index + 1}</h5>
 			<div className="answers">
 				{Array.from({ length: 4 }).map((_,i)=>(

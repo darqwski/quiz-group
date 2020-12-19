@@ -1,10 +1,10 @@
 .answers {
     display: grid;
     grid-template-columns: auto auto;
-}
-.answer {
-    margin: 1rem 0.5rem;
-    padding:0.5rem;
+    &> .answer {
+        margin: 1rem 0.5rem;
+        padding:0.5rem;
+    }
 }
 .answer > .btn {
     margin: auto 0.5rem;
@@ -12,5 +12,15 @@
 .create-quiz {
     .card-title {
         padding: 1rem;
+    }
+}
+.question-answer {
+    .question {
+       font-size: 1.2rem;
+        font-weight: bold;
+        padding: 1rem;
+    }
+    .answer {
+        padding-left: 2rem;
     }
 }

@@ -16,8 +16,8 @@ const Modal = ({
 		<div className="modal-background">
 			<div className="modal" >
 				<div className="modal-content">
-					<h4>{title}</h4>
-					<p>{message}</p>
+					{title && <h4>{title}</h4>}
+					{message && <p>{message}</p>}
 					{children}
 				</div>
 				<div className="modal-footer">
