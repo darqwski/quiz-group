@@ -2,4 +2,5 @@
 /react/build/bundle.js
 /react/build/index.html
 /react/build/main.bundle.js
-/build/template/DB_PASS.php
+/.build/template/DB_PASS.php
+/.build/.env.sh
