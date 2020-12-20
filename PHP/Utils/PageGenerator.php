@@ -31,7 +31,8 @@ function generatePage($path = '/'){
         <div id='react-app'></div>
         <script type='application/javascript'>
             window.serverData = ".json_encode([
-                'login'=> isset($_SESSION['login']) ? $_SESSION['login'] : null
+                'login'=> isset($_SESSION['login']) ? $_SESSION['login'] : null,
+                'admin' => isset($_SESSION['adminId']) ? 1 : 0
         ])."
         </script>
         <script src='".$path.BUILD_PATH."bundle.js'></script>

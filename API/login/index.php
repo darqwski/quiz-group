@@ -29,6 +29,13 @@ function login(){
     if(md5($data['password']) == $user[0]['password'] ){
         $_SESSION['userId']=$user[0]['userId'];
         $_SESSION['login']=$user[0]['login'];
+        $user = PDOController::getCommand(
+            "SELECT adminId FROM admins WHERE userId=:userId",
+            ["userId"=>$_SESSION['userId']]
+        );
+        if(count($user) == 1){
+            $_SESSION['adminId'] = $user[0]['adminId'];
+        }
         return Response::message("Login Successfull");
     }
 

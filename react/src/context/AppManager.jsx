@@ -6,12 +6,13 @@ export const AppContext = createContext({});
 export const useAppContext = () => useContext(AppContext);
 
 export const AppManager = ({ children }) => {
-	const { serverData: { login } } = window;
+	const { serverData: { login, admin } } = window;
 	const isLogged = () => !!login;
-	console.log(login)
+	const isAdmin = () => !!admin;
+
 	return (
 		<AppContext.Provider value={{
-			isLogged, login
+			isLogged, login, isAdmin
 		}}>
 			{children}
 		</AppContext.Provider>

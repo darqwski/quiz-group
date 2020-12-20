@@ -5,12 +5,15 @@ import { APP_NAME } from '../../config/app-config';
 import './navbar.less';
 
 const NavBar = ({ title = 'QUIZ-GROUP', back = false }) => {
-	const { isLogged, login } = useAppContext();
-	console.log({ back })
+	const { isLogged, isAdmin, login } = useAppContext();
+
 	return (
 		<div className="navbar card purple darken-4 white-text">
 			<div className="navbar-menu">
 				{back && (<a href="../"><i className="material-icons white-text">arrow_back</i></a>)}
+				{!back && isAdmin() &&  (
+					<a className="btn-flat white-text" href={`/${APP_NAME}/admin/dashboard/`}> Administracja </a>
+				)}
 			</div>
 			<div className="navbar-logo">{title}</div>
 			<div className="navbar-auth">

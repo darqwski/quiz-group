@@ -10,7 +10,7 @@ session_start();
 
 define('PAGE_SIZE', 50);
 
-function getQuizes(){
+function getQuizes() {
     $page = isset($_GET['page']) ? $_GET['page'] : 0;
 
     return (new DataStream())->getFromQuery("

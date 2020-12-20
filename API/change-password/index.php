@@ -9,7 +9,7 @@ session_start();
 
 function updatePassword(){
     $data = RequestAPI::getJSON();
-    //TODO only user
+
     $oldPassword = PDOController::getCommand("SELECT password FROM users WHERE userId = '$_SESSION[userId]'")[0]['password'];
     if($oldPassword !== md5($data['oldPassword'])){
         return Response::message('Old password is wrong', 401);
