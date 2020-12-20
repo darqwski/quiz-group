@@ -5,6 +5,7 @@ import routing from './config/routing';
 import { ROUTER_APP_PREFIX } from './config/app-config';
 import ModalManager from './context/ModalManager';
 import AppManager from './context/AppManager';
+import NavBar from './components/navbar/NavBar';
 
 const App = () => {
 	return (

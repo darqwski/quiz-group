@@ -7,6 +7,7 @@ import appRequest from '../../../utils/appRequest';
 import { useSnackbar } from '../../../context/SnackBarManager';
 import { isAnyChanges, parseDataToObject, prepareData } from './utils';
 import QuestionAnswersView from './QuestionAnswersView';
+import NavBar from '../../../components/navbar/NavBar';
 
 const QuizDetails = () => {
 	const quizId = window.sessionStorage.getItem('quizIdDetails');
@@ -37,21 +38,24 @@ const QuizDetails = () => {
 
 	};
 	return loading ? <Loading/> : (
-		<div className="edit-quiz card container">
-			<h3>Panel edycji quizu</h3>
-			<div>
-				<FormInput name="quizName" label="Nazwa quizu" />
-				<FormInput name="quizDescription" label="Opis quizu" />
-				{data && data.map((item, index)=>(
-					<QuestionAnswersView
-						index={index}
-						key={`QuestionAnswersView-${index}`}
-					/>
-				))}
+		<>
+			<NavBar title="Panel edycji quizu" back />
+			<div className="edit-quiz card container">
+				<h3>Panel edycji quizu</h3>
+				<div>
+					<FormInput name="quizName" label="Nazwa quizu" />
+					<FormInput name="quizDescription" label="Opis quizu" />
+					{data && data.map((item, index)=>(
+						<QuestionAnswersView
+							index={index}
+							key={`QuestionAnswersView-${index}`}
+						/>
+					))}
+				</div>
+				<button className="btn-large green darken-4" onClick={onFormSave}>Zapisz formularz</button>
+				<a className="btn-flat" href="../">Wróć do profilu</a>
 			</div>
-			<button className="btn-large green darken-4" onClick={onFormSave}>Zapisz formularz</button>
-			<a className="btn-flat" href="../..">Wróć do profilu</a>
-		</div>
+		</>
 	);
 };
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
+import NavBar from '../../components/navbar/NavBar';
 import useAppRequest from '../../hooks/useAppRequest';
 import { useAppContext } from '../../context/AppManager';
 import appRequest from '../../utils/appRequest';
 import SingleQuiz from './SingleQuiz';
 import SingleCategoryView from './SingleCategoryView';
 import './dashboard.less';
-import NavBar from './NavBar';
 
 const Dashboard = () => {
 	const { data, loading } = useAppRequest({
