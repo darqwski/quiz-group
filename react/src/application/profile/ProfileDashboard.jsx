@@ -4,6 +4,7 @@ import ValueDesc from '../../components/value-desc/ValueDesc';
 import useAppRequest from '../../hooks/useAppRequest';
 import Loading from '../../components/loading/Loading';
 
+
 const ProfileDashboard = () => {
 	const { data, loading } = useAppRequest({
 		url: '/API/user-info/'
@@ -12,8 +13,9 @@ const ProfileDashboard = () => {
 	const { email, login, joined } = user || {};
 	const { categories, average, all } = games || {};
 	const categoriesValue = categories && categories.map(({ categoryName, categoryCount })=>(
-		`${categoryName} (${parseInt(categoryCount/all)*100}%)
+		`${categoryName} (${parseInt(categoryCount*100/+all)}%)
 	`)).join(',');
+
 	return loading ? <Loading/> : (
 		<div className="profile">
 			<div className="profile-title deep-purple darken-2 white-text">
@@ -50,8 +52,15 @@ const ProfileDashboard = () => {
 				<h3 className="profile-section-title">
 					Utworzone Quizy
 				</h3>
-				<ValueDesc value={created?.all} desc="Liczba stworzonych quizów" />
-				<ValueDesc value={`${parseInt(created?.average*100)}%`} desc="Średni wynik quizów" />
+				{created && created.map(({ name, quizId, average })=>(
+					<div key={`created-${quizId}`} className="clickable flex-grow" onClick={()=>{
+						window.sessionStorage.setItem('quizIdDetails',quizId);
+						window.location.href='quiz-details';
+					}}>
+						<ValueDesc value={name} desc="Nazwa" />
+						<ValueDesc value={parseInt(average*100)+'%'} desc="Średni wynik" />
+					</div>
+				))}
 			</div>
 		</div>
 	);

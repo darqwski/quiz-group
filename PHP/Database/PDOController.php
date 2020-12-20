@@ -38,6 +38,11 @@ class PDOController
         return $data;
     }
 
+    /**
+     * @param $command
+     * @param array $params
+     * @return mixed
+     */
      static function putCommand($command, $params = []){
         self::openDatabaseConnection();
         $statement = PDOController::$db->prepare($command);

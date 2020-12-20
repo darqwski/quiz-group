@@ -12,10 +12,10 @@ function getUserDetails(){
 
 function getGamesDetails(){
     $categories = PDOController::getCommand("
-    SELECT c.name as categoryName, COUNT(c.categoryId) as categoryCount FROM `games` 
-    INNER JOIN quizes q on games.quizId = q.quizId
-    INNER JOIN categories c on q.categoryId = c.categoryId
-    WHERE q.isActive = 1
+    SELECT c.name as categoryName, COUNT(c.categoryId) as categoryCount FROM games
+    INNER JOIN quizes q ON q.quizId = games.quizId
+    INNER JOIN categories c ON c.categoryId = q.categoryId
+    WHERE games.userId = $_SESSION[userId] AND q.isActive = 1
     GROUP BY c.categoryId
     ORDER BY COUNT(c.categoryId)
     LIMIT 3;
@@ -33,10 +33,11 @@ WHERE userId = $_SESSION[userId]
 }
 function getCreatedDetails(){
     return PDOController::getCommand("
-SELECT AVG(result/5) as `average`, count(*) as `all` FROM `games` 
+SELECT AVG(result/5) as `average`, count(q.quizId) as `all`,q.name, q.quizId FROM `games` 
 INNER JOIN quizes q on games.quizId = q.quizId AND q.creatorId = $_SESSION[userId]
 WHERE userId = $_SESSION[userId] AND q.isActive = 1
-")[0];
+GROUP BY q.quizId
+");
 }
 
 function getUserInfo(){

@@ -10,6 +10,7 @@ import Register from '../application/register/Register';
 import ProfileDashboard from '../application/profile/ProfileDashboard';
 import AdminDashboard from "../application/admin/dashboard/AdminDashboard";
 import QuizesDashboard from "../application/admin/quizes/QuizesDashboard";
+import QuizDetails from "../application/profile/quiz-details/QuizDetails";
 
 export default [
 	{
@@ -71,5 +72,10 @@ export default [
 		inMenu: true,
 		path: '/profile',
 		component: ProfileDashboard
+	},
+	{
+		inMenu: true,
+		path: '/profile/quiz-details/',
+		component: QuizDetails
 	}
 ];
