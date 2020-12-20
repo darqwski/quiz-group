@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ValueDesc from '../../components/value-desc/ValueDesc';
+import ValueDesc from '../../../components/value-desc/ValueDesc';
 
 const SingleCreateQuiz = ({ quizId, average, name }) => {
 	const onClick = ()=>{
@@ -13,7 +13,8 @@ const SingleCreateQuiz = ({ quizId, average, name }) => {
 		<div className={`clickable created-quiz ${colorClassName} lighten-2`} onClick={onClick}>
 			<ValueDesc value={name} desc="Nazwa" />
 			<ValueDesc value={parseInt(average*100)+'%'} desc="Średni wynik" />
-		</div>    );
+		</div>
+	);
 };
 
 SingleCreateQuiz.propTypes = {};

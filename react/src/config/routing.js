@@ -7,10 +7,11 @@ import CreateQuiz from '../application/create-quiz/CreateQuiz';
 import CategoriesDashboard from '../application/admin/categories/CategoriesDashboard';
 import AddCategory from '../application/admin/categories/AddCategory';
 import Register from '../application/register/Register';
-import ProfileDashboard from '../application/profile/ProfileDashboard';
-import AdminDashboard from "../application/admin/dashboard/AdminDashboard";
-import QuizesDashboard from "../application/admin/quizes/QuizesDashboard";
-import QuizDetails from "../application/profile/quiz-details/QuizDetails";
+import ProfileDashboard from '../application/profile/dashboard/ProfileDashboard';
+import AdminDashboard from '../application/admin/dashboard/AdminDashboard';
+import QuizesDashboard from '../application/admin/quizes/QuizesDashboard';
+import QuizDetails from '../application/profile/quiz-details/QuizDetails';
+import ChangePassword from "../application/profile/change-password/ChangePassword";
 
 export default [
 	{
@@ -75,7 +76,12 @@ export default [
 	},
 	{
 		inMenu: true,
-		path: '/profile/quiz-details/',
+		path: '/profile/quiz-details',
 		component: QuizDetails
+	},
+	{
+		inMenu: true,
+		path: '/profile/change-password',
+		component: ChangePassword
 	}
 ];

@@ -1,10 +1,10 @@
 import React from 'react';
 import './profile.less';
-import ValueDesc from '../../components/value-desc/ValueDesc';
-import useAppRequest from '../../hooks/useAppRequest';
-import Loading from '../../components/loading/Loading';
-import NavBar from '../../components/navbar/NavBar';
-import SingleCreateQuiz from "./SingleCreateQuiz";
+import SingleCreateQuiz from './SingleCreateQuiz';
+import useAppRequest from '../../../hooks/useAppRequest';
+import Loading from '../../../components/loading/Loading';
+import NavBar from '../../../components/navbar/NavBar';
+import ValueDesc from '../../../components/value-desc/ValueDesc';
 
 const ProfileDashboard = () => {
 	const { data, loading } = useAppRequest({
@@ -32,7 +32,7 @@ const ProfileDashboard = () => {
 							<ValueDesc value={joined} desc="Data dołączenia" />
 						</div>
 						<div className="flex-grow profile-actions">
-							<a className="btn-flat"><i className="material-icons left">change_circle</i>Zmień hasło</a>
+							<a className="btn-flat" href="change-password/"><i className="material-icons left">change_circle</i>Zmień hasło</a>
 							<a className="btn-flat"><i className="material-icons left">edit</i>Edytuj dane</a>
 							<a className="btn-flat"><i className="material-icons left">delete</i>Usuń konto</a>
 						</div>
