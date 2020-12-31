@@ -9,10 +9,26 @@ import SingleCategoryView from './SingleCategoryView';
 import './dashboard.less';
 
 const Dashboard = () => {
+	const [pageNumber, setPageNumber] = useState(0)
+
 	const { data, loading } = useAppRequest({
 		name: 'data',
-		url: '/API/dashboard/',
+		url: '/API/dashboard/?pageNumber='+pageNumber,
+		deps: [pageNumber]
 	});
+	const prevPage = () => {
+		if(pageNumber === 0){
+			return;
+		}
+		setPageNumber(i=>i-1);
+	}
+	const nextPage = () => {
+		if(data.lastPage){
+			return;
+		}
+		setPageNumber(i=>i+1);
+
+	}
 	const [ view, setView ] = useState('popular');
 	const [ categoryQuizes, setCategoryQuizes ] = useState();
 	const [ categoryId, setCategoryId ] = useState();
@@ -98,6 +114,13 @@ const Dashboard = () => {
 					Brak ciekawych quizów? Dodaj własny!
 				</a>
 			)}
+			{view === 'popular' && <div className="pagination-controller">
+				<div className="card">
+					<i className="material-icons" onClick={prevPage}>arrow_left</i>
+					<p>Strona {pageNumber+1}</p>
+					<i className="material-icons" onClick={nextPage}>arrow_right</i>
+				</div>
+			</div>}
 		</div>
 	);
 };

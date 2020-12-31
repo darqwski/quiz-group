@@ -29,3 +29,24 @@
     padding: 1rem;
   }
 }
+
+.pagination-controller {
+  display: flex;
+    &>div {
+      margin: auto;
+      display: flex;
+        &>* {
+          padding:0 1rem;
+        }
+        &>i {
+          padding-top: 0.25rem;
+          font-size: 2rem;
+          font-weight: bold;
+          cursor: pointer;
+        }
+        &> p {
+          margin: 0;
+          font-size: 1.5rem;
+        }
+    }
+}

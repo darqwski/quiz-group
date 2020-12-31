@@ -3,7 +3,7 @@ const filePath = './testData.sql';
 
 const NUMBER_OF_QUIZES = 150;
 const NUMBER_OF_USERS = 20;
-const NUMBER_OF_GAMES = NUMBER_OF_QUIZES* NUMBER_OF_USERS*10;
+const NUMBER_OF_GAMES = NUMBER_OF_QUIZES*10;
 
 const QUIZ_OFFSET = 1000;
 const USERS_OFFSET = 3000;
@@ -54,16 +54,23 @@ for(let i = 1; i<NUMBER_OF_USERS+1;i++){
 }
 text+=`
     
-    DELETE FROM games WHERE gameId > ${GAMES_OFFSET} AND ${GAMES_OFFSET+NUMBER_OF_GAMES} < gameId;
+    DELETE FROM games WHERE gameId >= ${GAMES_OFFSET} AND ${GAMES_OFFSET+NUMBER_OF_GAMES} >= gameId;
     `
 console.log("Generating SQL for games");
 let sumOfPoints = 0;
+
+const userQuizes = []
 for(let i = 0;i< NUMBER_OF_GAMES;i++){
     const randomUserId = USERS_OFFSET + 1 +  parseInt(Math.random() * (NUMBER_OF_USERS - 1) + 1)
     const randomQuizId = QUIZ_OFFSET + 1 +  parseInt(Math.random() * (NUMBER_OF_QUIZES - 1) + 1)
-    const randomResult = parseInt(Math.random() * 5)
+    const randomResult = Math.min(parseInt(Math.random() * 6), 5)
+    if(userQuizes.some(({user, quiz})=> user === randomUserId && quiz === randomQuizId)){
+        i--;
+        continue;
+    }
+    userQuizes.push({user: randomUserId, quiz: randomQuizId});
     const gameId = GAMES_OFFSET+i;
-    sumOfPoints+=randomResult;
+    sumOfPoints+= randomResult;
     text+=`
 INSERT INTO \`games\` (\`gameId\`, \`userId\`, \`quizId\`, \`result\`, \`start\`, \`stop\`) 
 VALUES (${gameId}, '${randomUserId}', '${randomQuizId}', '${randomResult}', NOW(), NOW());

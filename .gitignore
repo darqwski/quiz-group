@@ -4,4 +4,4 @@
 /react/build/main.bundle.js
 /.build/template/DB_PASS.php
 /.build/.env.sh
-/.test/SQL/testData.sql
+/testData.sql

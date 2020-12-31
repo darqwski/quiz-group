@@ -6,24 +6,27 @@ include_once "../../PHP/Utils/DataStream.php";
 include_once "../../PHP/Utils/RequestAPI.php";
 
 session_start();
+define("PAGE_SIZE",25);
 
 function getPopularQuizes(){
     if(isset($_SESSION['userId'])){
         return PDOController::getCommand("
-        SELECT q.*, c.name as category, count(q.quizId)-IF(games.gameId IS NULL, 1, 0) AS playedTimes, g.result as result FROM games 
+        SELECT q.*, c.name as category, q.sumOfGames, g.result as result FROM games 
         RIGHT JOIN quizes q ON q.quizId = games.quizId 
         LEFT JOIN games g ON g.gameId = games.gameId AND g.userId = $_SESSION[userId]
         INNER JOIN categories c on q.categoryId = c.categoryId
         GROUP BY q.quizId
-        ORDER BY count(q.quizId) DESC
+        ORDER BY q.sumOfGames DESC
+        LIMIT ".(PAGE_SIZE*$_GET['pageNumber']).", ".(PAGE_SIZE+1)."
 ");
     } else {
         return PDOController::getCommand("
-        SELECT q.*, c.name as category, count(q.quizId)-IF(games.gameId IS NULL, 1, 0) AS playedTimes FROM games 
+        SELECT q.*, c.name as category, sumOfGames FROM games 
         RIGHT JOIN quizes q ON q.quizId = games.quizId 
         INNER JOIN categories c on q.categoryId = c.categoryId
         GROUP BY q.quizId
-        ORDER BY count(q.quizId) DESC
+        ORDER BY q.sumOfGames DESC
+        LIMIT ".(PAGE_SIZE*$_GET['pageNumber']).", ".(PAGE_SIZE+1)."
 ");
     }
 }
@@ -68,7 +71,8 @@ function getDashboardInfo() {
         'popular'=>$popularQuizes,
         "recommended"=>$recommendedQuizes,
         "categories"=>$categories,
-        "lastInfo"=>$lastInfo
+        "lastInfo"=>$lastInfo,
+        "lastPage" => count($popularQuizes) == PAGE_SIZE + 1 ? false : true
     ])))->toJson();
 }
 

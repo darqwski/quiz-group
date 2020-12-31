@@ -34,8 +34,8 @@ WHERE userId = $_SESSION[userId]
 function getCreatedDetails(){
     return PDOController::getCommand("
 SELECT AVG(result/5) as `average`, count(q.quizId) as `all`,q.name, q.quizId FROM `games` 
-RIGHT JOIN quizes q on games.quizId = q.quizId AND q.creatorId = $_SESSION[userId]
-WHERE q.isActive = 1
+RIGHT JOIN quizes q on games.quizId = q.quizId 
+WHERE q.isActive = 1 AND q.creatorId = $_SESSION[userId]
 GROUP BY q.quizId
 ");
 }
@@ -44,7 +44,8 @@ function getUserInfo(){
     return (new DataStream([
         'user'=>getUserDetails(),
         'games'=>getGamesDetails(),
-        'created'=>getCreatedDetails()
+        'created'=>getCreatedDetails(),
+        'userId' => $_SESSION['userId']
     ]))->toJson();
 }
 

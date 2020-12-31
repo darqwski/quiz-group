@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import appRequest from '../utils/appRequest';
 
-export default ({ name = 'data', url, method, data }) => {
+export default ({ name = 'data', url, method, data, deps = [] }) => {
 	const [responseData, setResponseData] = useState();
 	const [loading, setLoading] = useState();
 	const [isRefresh, setRefresh] = useState(false);
@@ -14,7 +14,7 @@ export default ({ name = 'data', url, method, data }) => {
 			setResponseCode(status);
 			setLoading(false);
 		});
-	}, [isRefresh]);
+	}, [isRefresh, ...deps]);
 
 	const refresh = () => setRefresh(i=>!i);
 
