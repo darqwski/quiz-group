@@ -21,7 +21,7 @@ function getGamesDetails(){
     LIMIT 3;
 ");
     $games = PDOController::getCommand("
-SELECT AVG(result/5) as `average`, count(*) as `all` FROM `games` 
+SELECT AVG( result/5) as `average`, count(*) as `all` FROM `games` 
 WHERE userId = $_SESSION[userId]
 ")[0];
 
@@ -34,8 +34,8 @@ WHERE userId = $_SESSION[userId]
 function getCreatedDetails(){
     return PDOController::getCommand("
 SELECT AVG(result/5) as `average`, count(q.quizId) as `all`,q.name, q.quizId FROM `games` 
-INNER JOIN quizes q on games.quizId = q.quizId AND q.creatorId = $_SESSION[userId]
-WHERE userId = $_SESSION[userId] AND q.isActive = 1
+RIGHT JOIN quizes q on games.quizId = q.quizId AND q.creatorId = $_SESSION[userId]
+WHERE q.isActive = 1
 GROUP BY q.quizId
 ");
 }

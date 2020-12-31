@@ -37,6 +37,15 @@ function calculateResult(){
     return $result[0]['sumOfPoints'];
 }
 
+function updateQuiz($result) {
+    PDOController::putCommand("
+    UPDATE `quizes` 
+    SET `sumOfPoints` = `sumOfPoints` + $result, 
+        `sumOfGames` = `sumOfGames` +1  
+    WHERE `quizes`.`quizId` = :quizId;
+", ['quizId'=>$_SESSION['quizId']]);
+}
+
 function answerQuestion(){
     $answer = RequestAPI::getJSON()['answer'];
 
@@ -58,7 +67,9 @@ function answerQuestion(){
         $response['isLastAnswer'] = true;
         $response['result']=calculateResult();
         endGame($response['result']);
+        updateQuiz($response['result']);
         unset($_SESSION['gameId']);
+        unset($_SESSION['quizId']);
         if(isset($_SESSION['randomUserId'])){
             unset($_SESSION['userId']);
             unset($_SESSION['randomUserId']);

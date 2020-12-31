@@ -41,11 +41,6 @@ const Dashboard = () => {
 					</div>
 				</div>
 			</div>
-			{isLogged() && (
-				<a className="dashboard-add-quiz blue darken-2 white-text clickable" href="../create-quiz" >
-					Brak ciekawych quizów? Dodaj własny!
-				</a>
-			)}
 			<div className="dashboard-tabs">
 				<div
 					className="dashboard-tab purple darken-2 white-text clickable"
@@ -97,6 +92,11 @@ const Dashboard = () => {
 						<SingleQuiz {...item} key={`single-quiz-${index}`} />
 					))}
 				</div>
+			)}
+			{isLogged() && (
+				<a className="dashboard-add-quiz blue darken-2 white-text clickable" href="../create-quiz" >
+					Brak ciekawych quizów? Dodaj własny!
+				</a>
 			)}
 		</div>
 	);

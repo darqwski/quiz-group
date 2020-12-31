@@ -8,13 +8,24 @@ include_once "../../PHP/Utils/RequestAPI.php";
 session_start();
 
 function getPopularQuizes(){
-    return PDOController::getCommand("
+    if(isset($_SESSION['userId'])){
+        return PDOController::getCommand("
+        SELECT q.*, c.name as category, count(q.quizId)-IF(games.gameId IS NULL, 1, 0) AS playedTimes, g.result as result FROM games 
+        RIGHT JOIN quizes q ON q.quizId = games.quizId 
+        LEFT JOIN games g ON g.gameId = games.gameId AND g.userId = $_SESSION[userId]
+        INNER JOIN categories c on q.categoryId = c.categoryId
+        GROUP BY q.quizId
+        ORDER BY count(q.quizId) DESC
+");
+    } else {
+        return PDOController::getCommand("
         SELECT q.*, c.name as category, count(q.quizId)-IF(games.gameId IS NULL, 1, 0) AS playedTimes FROM games 
         RIGHT JOIN quizes q ON q.quizId = games.quizId 
         INNER JOIN categories c on q.categoryId = c.categoryId
         GROUP BY q.quizId
         ORDER BY count(q.quizId) DESC
 ");
+    }
 }
 
 function getRecommendedQuizes(){

@@ -10,6 +10,7 @@ session_start();
 
 function startGame(){
     $quizId = RequestAPI::getJSON()['quizId'];
+    $_SESSION['quizId'] = $quizId;
     if(!isset($_SESSION['userId'])){
         //FOR UNLOGGED USER
         $_SESSION['userId'] = time();
