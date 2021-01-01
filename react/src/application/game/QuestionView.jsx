@@ -52,6 +52,7 @@ const QuestionView = () => {
 						text={text}
 						refresh={refresh}
 						setStop={setStop}
+						stop={stop}
 					/>
 				))}
 			</div>

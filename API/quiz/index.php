@@ -11,7 +11,8 @@ function createQuiz() {
     $data = RequestAPI::getJSON();
     $questions = $data['questions'];
     $quiz = $data['quiz'];
-    if(!isset($data['quizName']) || !isset($data['quizDescription']) || !isset($data['quizCategory'])){
+
+    if(!isset($quiz['quizName']) || !isset($quiz['quizDescription']) || !isset($quiz['quizCategory'])){
         return Response::message("Quiz data is missing", 400);
     }
     if(count($questions) != 5){
@@ -22,7 +23,7 @@ function createQuiz() {
         if(!isset($question['answers'])){
             return Response::message("Question doesn't contain answers", 400);
         }
-        if($question['answers'] != 4){
+        if(count($question['answers']) != 4){
             return Response::message("Question doesn't contain proper amount of answers", 400);
         }
         $onCorrectAnswer = 0;
@@ -42,9 +43,9 @@ function createQuiz() {
 
     $quizId = PDOController::insertCommand("
     INSERT INTO `quizes` (
-        `quizId`, `name`, `description`, `creatorId`, `isActive`, `categoryId`, `created`
+        `quizId`, `name`, `description`, `creatorId`, `isActive`, `categoryId`, `created`, sumOfGames, sumOfPoints
     ) VALUES (
-      NULL, :quizName, :quizDescription, :userId, '1', :quizCategory, NOW()
+      NULL, :quizName, :quizDescription, :userId, '1', :quizCategory, NOW(), 0, 0
     );
 ",[
     'quizName'=>$quiz['quizName'],

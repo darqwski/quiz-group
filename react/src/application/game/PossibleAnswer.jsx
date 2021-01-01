@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import appRequest from '../../utils/appRequest';
 import { useGame } from './GameContext';
 
-const PossibleAnswer = ({ answerId, text, setStop }) => {
+const PossibleAnswer = ({ answerId, text, setStop, stop }) => {
 	const { addCorrectAnswer, addUserAnswer, setLastAnswer, questions, userAnswers, isCorrect } = useGame();
 	const isQuestionAnswered = questions.length === userAnswers.length;
 	const className = !isQuestionAnswered ? 'light-blue' :isCorrect(answerId) ? 'green' : 'red';
 	const onClick = () => {
-		if(isQuestionAnswered){
+		if(stop){
 			return;
 		}
 		appRequest({
@@ -31,6 +31,7 @@ const PossibleAnswer = ({ answerId, text, setStop }) => {
 PossibleAnswer.propTypes = {
 	answerId: PropTypes.string,
 	text: PropTypes.string,
+	stop: PropTypes.bool,
 	setStop: PropTypes.func
 };
 

@@ -17,7 +17,7 @@ function getQuizInfo(){
 
     $quiz = PDOController::getCommand("
         SELECT quizes.name, count(q.quizId)  as numberOfQuestions, quizes.description, c.name as `category`, 
-               u.login as `author`, sumOfPoints/sumOfGames as `average`
+               u.login as `author`, quizes.sumOfPoints/quizes.sumOfGames as `average`
         FROM quizes
         INNER JOIN questions q on quizes.quizId = q.quizId
         INNER JOIN users u on u.userId = quizes.creatorId
