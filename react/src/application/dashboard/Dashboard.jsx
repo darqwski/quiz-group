@@ -78,7 +78,7 @@ const Dashboard = () => {
 				</div>
 			</div>
 			{view === 'popular' && (
-				<div className="flex">
+				<div className="dashboard-content">
 					{data && data.popular.map((item,index)=>(
 						<SingleQuiz {...item} key={`single-quiz-${index}`} />
 					))}

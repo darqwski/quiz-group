@@ -11,7 +11,7 @@ import ProfileDashboard from '../application/profile/dashboard/ProfileDashboard'
 import AdminDashboard from '../application/admin/dashboard/AdminDashboard';
 import QuizesDashboard from '../application/admin/quizes/QuizesDashboard';
 import QuizDetails from '../application/profile/quiz-details/QuizDetails';
-import ChangePassword from "../application/profile/change-password/ChangePassword";
+import ChangePassword from '../application/profile/change-password/ChangePassword';
 
 export default [
 	{
