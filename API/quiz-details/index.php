@@ -8,7 +8,8 @@ include_once "../../PHP/Utils/Response.php";
 session_start();
 
 function getQuizById(){
-    return (new DataStream())->getFromQuery("
+
+    $quizData = (new DataStream())->getFromQuery("
     SELECT *, questions.text as questionText, answers.text as answerText FROM `quizes` 
         INNER JOIN questions ON questions.quizId = quizes.quizId 
         INNER JOIN answers ON answers.questionId = questions.questionId 
@@ -16,7 +17,22 @@ function getQuizById(){
     ",['quizId'=>$_GET['quizId']])
         ->groupBy("questionId")
         ->toArray()
-        ->toJson();
+        ->get();
+    $gamesData = ((new DataStream())
+        ->getFromQuery("
+                SELECT 
+                    user_answers.answerId, 
+                    user_answers.questonId, 
+                    user_answers.datetime,
+                    count(*) as amount
+                FROM `games` 
+                INNER JOIN user_answers ON user_answers.gameId = games.gameId 
+                WHERE games.quizId = :quizId
+                GROUP BY user_answers.answerId, user_answers.questonId
+            ",['quizId'=>$_GET['quizId']]))
+        ->get();
+
+    return (new DataStream(['quizData'=>$quizData, 'gamesData'=>$gamesData]))->toJson();
 }
 function updateQuizById(){
     //TODO check of is creator or admin

@@ -22,6 +22,7 @@ const CreateQuiz = () => {
 
 	const submitForm = e => {
 		clearErrors();
+		let hasErrors = false;
 		e.preventDefault();
 		const parsedQuestions = Object.keys(questions).map(key=>questions[key]).map(question=>({
 			...question,
@@ -38,16 +39,19 @@ const CreateQuiz = () => {
 			const { answers } = question;
 			if(answers.length !== 4){
 				addError(`Pytanie ${parsedQuestions.indexOf(question)} nie zawiera 4 odpowiedzi`);
-				return;
+				hasErrors = true;
 			}
 			const correctAnswers = answers?.filter(({ isCorrect })=>+isCorrect === 1)?.length;
 			if(correctAnswers === 0){
 				addError(`Pytanie ${index} nie zawiera poprawnej odpowiedzi`);
-				return;
+				hasErrors = true;
 			} else if(correctAnswers !== 1) {
 				addError(`Pytanie ${index} nie zawiera nadmiarną ilość poprawnych odpowiedzi`);
-				return;
+				hasErrors = true;
 			}
+		}
+		if(hasErrors){
+			return;
 		}
 
 		addModal({
@@ -62,9 +66,8 @@ const CreateQuiz = () => {
 				url: '/API/quiz/',
 				method: 'POST',
 				data: { quiz: { quizName, quizDescription, groupId, quizCategory }, questions: parsedQuestions }
-			}).then(({ data: { message } })=>addSnackBar({ text: message })).then(()=>{
-				history.push('summary');
-			})
+			}).then(({ data: { message } })=>addSnackBar({ text: message }))
+				.then(()=>setTimeout(()=>window.location.href = '../', 5000))
 		});
 	};
 
@@ -113,8 +116,6 @@ const CreateQuiz = () => {
 		</div>
 	);
 };
-
-CreateQuiz.propTypes = {};
 
 const CreateQuizWithContext = () => (
 	<FormDataManager initialData={{ questions: {} }}>

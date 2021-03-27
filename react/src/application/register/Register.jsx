@@ -33,7 +33,7 @@ const Register = () => {
 			url:'/API/register/',
 			method: 'POST',
 			data: { password, login, email }
-		}).then(({data: { message }, status })=>{
+		}).then(({ data: { message }, status })=>{
 			addSnackBar({ text: message });
 			if(status === 200){
 				setError(undefined);

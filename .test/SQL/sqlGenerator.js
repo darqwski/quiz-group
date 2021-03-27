@@ -34,7 +34,7 @@ VALUES (${quizId}, 'Quiz ${i}', '0', '0', 'Quiz description ${i}', NULL, '1', '1
         for(let k = 1; k< 5;k++){
             text+=`
         INSERT INTO \`answers\` (\`answerId\`, \`text\`, \`isCorrect\`, \`questionId\`)
-        VALUES (NULL, 'Answer ${k} for question ${j}', '${(j*13+k*3)%4 === 0 ? 1 : 0}', '${questionId}');
+        VALUES (${questionId*10+k}, 'Answer ${k} for question ${j}', '${(j*13+k*3)%4 === 0 ? 1 : 0}', '${questionId}');
 `
         }
     }
@@ -64,10 +64,12 @@ for(let i = 0;i< NUMBER_OF_GAMES;i++){
     const randomUserId = USERS_OFFSET + 1 +  parseInt(Math.random() * (NUMBER_OF_USERS - 1) + 1)
     const randomQuizId = QUIZ_OFFSET + 1 +  parseInt(Math.random() * (NUMBER_OF_QUIZES - 1) + 1)
     const randomResult = Math.min(parseInt(Math.random() * 6), 5)
+
     if(userQuizes.some(({user, quiz})=> user === randomUserId && quiz === randomQuizId)){
         i--;
         continue;
     }
+
     userQuizes.push({user: randomUserId, quiz: randomQuizId});
     const gameId = GAMES_OFFSET+i;
     sumOfPoints+= randomResult;
@@ -77,6 +79,13 @@ VALUES (${gameId}, '${randomUserId}', '${randomQuizId}', '${randomResult}', NOW(
 UPDATE \`quizes\` SET \`sumOfPoints\` = \`sumOfPoints\`+ ${randomResult}, \`sumOfGames\` = \`sumOfGames\`+1 
 WHERE \`quizes\`.\`quizId\` = ${randomQuizId};
 `;
+    for(let j = 1; j< 6;j++){
+        const randomAnswer = parseInt((Math.random() * 100)) % 4 + 1
+        text +=`
+            INSERT INTO \`user_answers\` (\`userAnswerId\`, \`userId\`, \`answerId\`, \`datetime\`, \`questonId\`,\`gameId\`)
+            VALUES (NULL, '${randomUserId}', '${(randomQuizId*10+j)*10+randomAnswer}', NOW(), '${randomQuizId*10+j}', '${gameId}');
+        `
+    }
 }
 
 fs.writeFile(filePath, text, (result)=>{

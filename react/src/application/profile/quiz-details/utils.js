@@ -21,8 +21,8 @@ export const prepareData = (formData) => {
 	};
 };
 
-export const parseDataToObject = data => ({
-	...data.reduce((questionMemo, questionItem, questionIndex)=>({
+export const parseDataToObject = ({ quizData }) => ({
+	...quizData.reduce((questionMemo, questionItem, questionIndex)=>({
 		...questionMemo,
 		[questionIndex]: {
 			...questionItem.reduce((answerMemo, answerItem, answerIndex)=>({
@@ -30,9 +30,9 @@ export const parseDataToObject = data => ({
 			}),{}),
 		}
 	}),{}),
-	quizId: data[0][0].quizId,
-	quizName: data[0][0].name,
-	quizDescription: data[0][0].description,
+	quizId: quizData[0][0].quizId,
+	quizName: quizData[0][0].name,
+	quizDescription: quizData[0][0].description,
 });
 
 export const isAnyChanges = (data, formData) => {

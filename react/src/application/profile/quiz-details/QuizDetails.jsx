@@ -8,6 +8,7 @@ import { useSnackbar } from '../../../context/SnackBarManager';
 import { isAnyChanges, parseDataToObject, prepareData } from './utils';
 import QuestionAnswersView from './QuestionAnswersView';
 import NavBar from '../../../components/navbar/NavBar';
+import QuizStatistics from './QuizStatistics';
 
 const QuizDetails = () => {
 	const quizId = window.sessionStorage.getItem('quizIdDetails');
@@ -22,7 +23,7 @@ const QuizDetails = () => {
 			setFormData(parseDataToObject(data));
 		}
 	}, [data]);
-
+	const { gamesData, quizData } = data || {};
 	const onFormSave = () => {
 		if(isAnyChanges(data, formData)){
 			appRequest({
@@ -39,13 +40,18 @@ const QuizDetails = () => {
 	};
 	return loading ? <Loading/> : (
 		<>
-			<NavBar title="Panel edycji quizu" back />
+			<NavBar title="Szczegóły quizu" back />
+			<div className="edit-quiz card container">
+				<h3>Udzielone odpowiedzi</h3>
+
+				{gamesData && <QuizStatistics gamesData={gamesData} quizData={quizData}  />}
+			</div>
 			<div className="edit-quiz card container">
 				<h3>Panel edycji quizu</h3>
 				<div>
 					<FormInput name="quizName" label="Nazwa quizu" />
 					<FormInput name="quizDescription" label="Opis quizu" />
-					{data && data.map((item, index)=>(
+					{quizData && quizData.map((item, index)=>(
 						<QuestionAnswersView
 							index={index}
 							key={`QuestionAnswersView-${index}`}
